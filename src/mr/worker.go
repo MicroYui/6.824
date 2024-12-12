@@ -23,6 +23,18 @@ const (
 	CompletePhase
 )
 
+func (phase SchedulePhase) String() string {
+	switch phase {
+	case MapPhase:
+		return "MapPhase"
+	case ReducePhase:
+		return "ReducePhase"
+	case CompletePhase:
+		return "CompletePhase"
+	}
+	panic(fmt.Sprintf("unexpected SchedulePhase %d", phase))
+}
+
 type JobType uint8
 
 // 定义worker任务类型
@@ -32,6 +44,20 @@ const (
 	WaitJob
 	CompleteJob
 )
+
+func (job JobType) String() string {
+	switch job {
+	case MapJob:
+		return "MapJob"
+	case ReduceJob:
+		return "ReduceJob"
+	case WaitJob:
+		return "WaitJob"
+	case CompleteJob:
+		return "CompleteJob"
+	}
+	panic(fmt.Sprintf("unexpected jobType %d", job))
+}
 
 // Map functions return a slice of KeyValue.
 type KeyValue struct {
