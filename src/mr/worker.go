@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sync"
@@ -183,7 +184,7 @@ func mapTask(mapF func(string, string) []KeyValue, response *HeartbeatResponse) 
 	if err != nil {
 		log.Fatalf("cannot open %v", fileName)
 	}
-	content, err := io.ReadAll(file)
+	content, err := ioutil.ReadAll(file)
 	if err != nil {
 		log.Fatalf("cannot read %v", fileName)
 	}
@@ -219,7 +220,7 @@ func mapTask(mapF func(string, string) []KeyValue, response *HeartbeatResponse) 
 		}(index, intermediate)
 	}
 	wg.Wait()
-	report(response.Id, ReducePhase)
+	report(response.Id, MapPhase)
 }
 
 func generateMapResultFileName(mapNumber, reduceNumber int) string {
@@ -235,7 +236,7 @@ func writeFile(filename string, r io.Reader) (err error) {
 	if dir == "" {
 		dir = "."
 	}
-	f, err := os.CreateTemp(dir, file)
+	f, err := ioutil.TempFile(dir, file)
 	if err != nil {
 		return fmt.Errorf("cannot create temp file: %v", err)
 	}
